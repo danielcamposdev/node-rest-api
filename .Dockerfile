@@ -1,9 +1,11 @@
 FROM node:alpine
+RUN mkdir -p /apps/node-rest-api/node_modules && chown -R node:node /apps/node-rest-api
 WORKDIR /apps/node-rest-api
-#COPY --chown=node:node . /apps/node-rest-api/package*.json ./
+COPY package*.json ./
+
+USER node
+RUN npm ci --only=production
 
 COPY --chown=node:node . .
-RUN npm install --only=production
-USER node
 EXPOSE 4000
-CMD [ "node", "./dist/server.js" ]
+CMD [ "node", "server.js" ]

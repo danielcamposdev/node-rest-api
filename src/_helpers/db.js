@@ -1,23 +1,24 @@
-const config = require("config.json");
-const mongoose = require("mongoose");
-const connectionOptions = {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-};
-mongoose.connect(
-  process.env.MONGODB_URI || config.connectionString,
-  connectionOptions
-);
-mongoose.Promise = global.Promise;
+import { config } from "../../config.js";
+import Mongoose from "mongoose";
+import UserModel from "../../user/user.model.js";
+//import { createTestUser } from "./create-test-user.js";
 
-module.exports = {
-  User: require("user/user.model"),
-  RefreshToken: require("user/refresh-token.model"),
-  isValidId,
-};
+async function connect() {
+  try {
+    await Mongoose.connect(process.env.MONGODB_URI || config.connectionString);
+    //createTestUser();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 function isValidId(id) {
-  return mongoose.Types.ObjectId.isValid(id);
+  return Mongoose.Types.ObjectId.isValid(id);
 }
+
+export {
+  connect,
+  UserModel,
+  //RefreshToken: require("user/refresh-token.model"),
+  isValidId,
+};
