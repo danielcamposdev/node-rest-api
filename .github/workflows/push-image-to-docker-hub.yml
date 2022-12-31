@@ -36,5 +36,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ GITHUB_REPOSITORY#*/ }}:latest          
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest          
       #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
